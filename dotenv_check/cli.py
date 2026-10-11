@@ -1,4 +1,4 @@
-"""dotenv-check [ENV] [--example FILE] [--strict] [--json]"""
+"""dotenv-check [ENV] [--example FILE] [--strict] [--ignore KEY] [--json]"""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("env", nargs="?", default=".env", help="env file to check (default: .env)")
     p.add_argument("--example", default=".env.example", help="template file (default: .env.example)")
     p.add_argument("--strict", action="store_true", help="extra keys and warnings are errors")
+    p.add_argument("--ignore", action="append", default=[], metavar="KEY", help="skip a template key, e.g. CI_TOKEN (repeatable)")
     p.add_argument("--json", action="store_true", help="JSON output")
     p.add_argument("--version", action="version", version=__version__)
     return p
@@ -24,8 +25,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    ignored = set(args.ignore)
     try:
         template = parse(Path(args.example).read_text(encoding="utf-8"), args.example)
+        template = {k: v for k, v in template.items() if k not in ignored}
         env = parse(Path(args.env).read_text(encoding="utf-8"), args.env)
     except OSError as exc:
         print(f"dotenv-check: {exc.strerror}: {exc.filename}", file=sys.stderr)

@@ -8,6 +8,7 @@
 python -m dotenv_check                 # .env против .env.example
 python -m dotenv_check prod.env --example .env.example
 python -m dotenv_check --strict --json # лишние ключи и предупреждения тоже дают код 1
+python -m dotenv_check --ignore CI_TOKEN   # пропустить ключ, нужный только в CI
 ```
 
 Пример:

@@ -94,6 +94,13 @@ class CliTests(unittest.TestCase):
             code, _ = self.run_cli(["/nope/.env", "--example", "/nope/.env.example"])
         self.assertEqual(code, 2)
 
+    def test_ignore_skips_template_key(self):
+        tmp = Path(tempfile.mkdtemp())
+        ex = write(tmp, ".env.example", "A=\nCI_TOKEN=\n")
+        env = write(tmp, ".env", "A=real\n")
+        self.assertEqual(self.run_cli([env, "--example", ex])[0], 1)
+        self.assertEqual(self.run_cli(["--ignore", "CI_TOKEN", env, "--example", ex])[0], 0)
+
     def test_json_output(self):
         tmp = Path(tempfile.mkdtemp())
         ex = write(tmp, ".env.example", "A=\n")

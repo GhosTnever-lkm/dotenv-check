@@ -53,3 +53,7 @@ MIT — см. [LICENSE](LICENSE).
 ```bash
 python -m dotenv_check examples/app.env --example .env.example --strict
 ```
+
+## История изменений
+
+См. [CHANGELOG.md](CHANGELOG.md). Политика безопасности — в [SECURITY.md](SECURITY.md).

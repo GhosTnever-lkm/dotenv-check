@@ -24,3 +24,7 @@ jobs:
         run: python -m unittest discover -s tests -t .
       - name: Check the bundled example env
         run: python -m dotenv_check examples/app.env --example .env.example --strict
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --quiet build
+          python -m build --outdir dist

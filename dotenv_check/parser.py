@@ -37,7 +37,22 @@ def parse(text: str, source: str = "<input>") -> dict[str, Entry]:
         if key in entries:
             raise ParseError(f"{source}:{number}: duplicate key {key} (first at line {entries[key].line})")
         value = value.strip()
-        if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
-            value = value[1:-1]
+        if value.startswith(("\"", "'")):
+            quote = value[0]
+            end = None
+            for index in range(1, len(value)):
+                if value[index] == quote and not (quote == '"' and value[index - 1] == "\\"):
+                    end = index
+                    break
+            if end is None:
+                raise ParseError(f"{source}:{number}: unterminated quoted value for {key}")
+            trailing = value[end + 1:].strip()
+            if trailing and not trailing.startswith("#"):
+                raise ParseError(f"{source}:{number}: unexpected text after quoted value for {key}")
+            value = value[1:end]
+        else:
+            comment = re.search(r"\s+#", value)
+            if comment:
+                value = value[:comment.start()].rstrip()
         entries[key] = Entry(key=key, value=value, line=number)
     return entries

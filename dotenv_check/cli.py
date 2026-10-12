@@ -36,15 +36,18 @@ def main(argv: list[str] | None = None) -> int:
     except ParseError as exc:
         print(f"dotenv-check: {exc}", file=sys.stderr)
         return 2
+    except UnicodeError:
+        print("dotenv-check: input file is not valid UTF-8", file=sys.stderr)
+        return 2
 
+    env = {k: v for k, v in env.items() if k not in ignored}
     result = compare(template, env, strict_extra=args.strict)
+    failed = result.failed or (args.strict and any(f.level == "warning" for f in result.findings))
     if args.json:
-        print(json.dumps({"findings": [f.__dict__ for f in result.findings], "failed": result.failed}, indent=2))
+        print(json.dumps({"findings": [f.__dict__ for f in result.findings], "failed": failed}, indent=2))
     else:
         if not result.findings:
             print(f"OK: {args.env} matches {args.example}")
         for f in result.findings:
             print(f"[{f.level.upper()}] {f.code}: {f.key}")
-    if args.strict and any(f.level == "warning" for f in result.findings):
-        return 1
-    return 1 if result.failed else 0
+    return 1 if failed else 0

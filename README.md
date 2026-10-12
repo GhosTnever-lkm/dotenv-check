@@ -1,11 +1,22 @@
 # dotenv-check
 
+[![CI](https://github.com/GhosTnever-lkm/dotenv-check/actions/workflows/ci.yml/badge.svg)](https://github.com/GhosTnever-lkm/dotenv-check/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/GhosTnever-lkm/dotenv-check)](https://github.com/GhosTnever-lkm/dotenv-check/releases/latest)
+
 Сверяет локальный `.env` с шаблоном `.env.example` перед запуском: показывает пропущенные, пустые, заглушечные и лишние ключи. **Значения никогда не выводятся** — ни в тексте, ни в JSON. Без зависимостей, Python 3.10+.
 
 ## Быстрый старт
 
+Скачайте wheel из [последнего релиза](https://github.com/GhosTnever-lkm/dotenv-check/releases/latest) и установите:
+
 ```bash
-python -m dotenv_check                 # .env против .env.example
+python -m pip install dotenv_check-0.1.2-py3-none-any.whl
+```
+
+Затем запустите:
+
+```bash
+dotenv-check                           # .env против .env.example
 python -m dotenv_check prod.env --example .env.example
 python -m dotenv_check --strict --json # лишние ключи и предупреждения тоже дают код 1
 python -m dotenv_check --ignore CI_TOKEN   # пропустить ключ, нужный только в CI
@@ -32,7 +43,7 @@ python -m dotenv_check --ignore CI_TOKEN   # пропустить ключ, ну
 
 ## Формат
 
-Поддерживаются `KEY=VALUE`, комментарии `#`, префикс `export `, значения в одинарных или двойных кавычках. Дубликаты ключей — ошибка парсинга.
+Поддерживаются `KEY=VALUE`, комментарии целой строки и в конце значения, префикс `export `, значения в одинарных или двойных кавычках. Незакрытые кавычки и дубликаты ключей — ошибка парсинга.
 
 ## Ограничения
 
@@ -44,6 +55,10 @@ python -m dotenv_check --ignore CI_TOKEN   # пропустить ключ, ну
 ```bash
 python -m unittest discover -s tests -t .
 ```
+
+## Поддержка и Pro-версия
+
+Базовая версия остаётся бесплатной; отдельный Pro-выпуск пока не опубликован. Нужны дополнительные правила шаблонов или CI-интеграция? [Опишите сценарий в запросе](https://github.com/GhosTnever-lkm/dotenv-check/issues/new).
 
 ## Лицензия
 

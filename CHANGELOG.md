@@ -5,6 +5,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-25
+
+### Fixed
+
+- Treat a double quote as escaped only when preceded by an odd-length run of backslashes.
+
 ## [0.1.2] - 2026-10-13
 
 ### Added
@@ -34,7 +40,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Values are never printed, including in JSON output.
 - `--strict` and `--json` modes; exit code 2 for unreadable or malformed files.
 
-[Unreleased]: https://github.com/GhosTnever-lkm/dotenv-check/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/GhosTnever-lkm/dotenv-check/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/GhosTnever-lkm/dotenv-check/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/GhosTnever-lkm/dotenv-check/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/GhosTnever-lkm/dotenv-check/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/GhosTnever-lkm/dotenv-check/releases/tag/v0.1.0

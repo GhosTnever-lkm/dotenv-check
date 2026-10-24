@@ -43,6 +43,14 @@ class ParserTests(unittest.TestCase):
         parsed = parse('TOKEN="value # part" # note\n')
         self.assertEqual(parsed["TOKEN"].value, "value # part")
 
+    def test_even_backslash_run_does_not_escape_closing_double_quote(self):
+        parsed = parse('TOKEN="value\\\\" # note\n')
+        self.assertEqual(parsed["TOKEN"].value, "value\\\\")
+
+    def test_odd_backslash_run_escapes_embedded_double_quote(self):
+        parsed = parse('TOKEN="say \\\"hello\\\"" # note\n')
+        self.assertEqual(parsed["TOKEN"].value, 'say \\\"hello\\\"')
+
     def test_unterminated_quote_is_parse_error_without_value(self):
         with self.assertRaises(ParseError) as raised:
             parse('SECRET="never-print-this')

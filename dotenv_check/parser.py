@@ -41,7 +41,14 @@ def parse(text: str, source: str = "<input>") -> dict[str, Entry]:
             quote = value[0]
             end = None
             for index in range(1, len(value)):
-                if value[index] == quote and not (quote == '"' and value[index - 1] == "\\"):
+                if value[index] != quote:
+                    continue
+                backslashes = 0
+                cursor = index - 1
+                while cursor > 0 and value[cursor] == "\\":
+                    backslashes += 1
+                    cursor -= 1
+                if quote != '"' or backslashes % 2 == 0:
                     end = index
                     break
             if end is None:
